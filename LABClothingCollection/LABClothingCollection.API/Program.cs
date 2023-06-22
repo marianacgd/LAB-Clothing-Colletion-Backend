@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-string connectionstring = builder.Configuration.GetConnectionString("ServerConnection");
 
 
 builder.Services.AddControllers();
@@ -13,9 +12,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<LABClothingCollectionDbContext>(options =>
-                                options.UseSqlServer(
-                                    builder.Configuration.GetConnectionString("ServerConnection")));
+string connectionstring = builder.Configuration.GetConnectionString("ServerConnection")!;
+
+builder.Services.AddDbContext<LABClothingCollectionDbContext>(options => options.UseSqlServer(connectionstring));
 
 var app = builder.Build();
 
