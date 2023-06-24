@@ -1,4 +1,4 @@
-using LABClothingCollection.API.Model;
+using LABClothingCollection.API.Models;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
 
