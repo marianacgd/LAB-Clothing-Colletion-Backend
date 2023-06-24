@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.Collections.Generic;
 
-namespace LABClothingCollection.API.Model
+namespace LABClothingCollection.API.Models
 {
     /// <summary>
     /// Iteração com o banco de dados, nas tabelas utilizando o DBSet
@@ -11,5 +12,8 @@ namespace LABClothingCollection.API.Model
         public LABClothingCollectionDbContext(DbContextOptions options) : base(options)
         {
         }
+
+        public virtual DbSet<UsuarioModel> Usuarios { get; set; }
+
     }
 }
