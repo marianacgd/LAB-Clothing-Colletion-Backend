@@ -22,6 +22,8 @@ string connectionstring = builder.Configuration.GetConnectionString("ServerConne
 
 builder.Services.AddDbContext<LABClothingCollectionDbContext>(options => options.UseSqlServer(connectionstring));
 
+builder.Services.AddAutoMapper(typeof(Program));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
