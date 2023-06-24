@@ -45,18 +45,24 @@ namespace LABClothingCollection.API.Migrations
 
                     b.Property<string>("Genero")
                         .IsRequired()
-                        .HasMaxLength(1)
-                        .HasColumnType("CHAR");
+                        .HasMaxLength(20)
+                        .HasColumnType("VARCHAR");
 
                     b.Property<string>("NomeCompleto")
                         .IsRequired()
                         .HasMaxLength(250)
                         .HasColumnType("VARCHAR");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
                     b.Property<string>("Telefone")
                         .IsRequired()
                         .HasMaxLength(11)
                         .HasColumnType("VARCHAR");
+
+                    b.Property<int>("Tipo")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
