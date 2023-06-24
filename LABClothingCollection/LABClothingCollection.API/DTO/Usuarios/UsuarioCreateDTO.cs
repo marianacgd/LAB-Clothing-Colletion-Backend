@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LABClothingCollection.API.DTO.Usuarios
 {
-    public class UsuarioCreateDTO
+    public class UsuarioCreateDTO : IValidatableObject
     {
         [Required(ErrorMessage = "Campo Obrigatório")]
         [MaxLength(250, ErrorMessage = "Este campo aceita até 250 caracteres")]
@@ -42,5 +42,27 @@ namespace LABClothingCollection.API.DTO.Usuarios
         [Required(ErrorMessage = "Campo Obrigatório")]
         [Display(Name = "Status de Usuário")]
         public StatusEnum Status { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            List<ValidationResult> lista  = new List<ValidationResult>();
+
+            if (!Enum.IsDefined(typeof(GeneroEnum), Genero))
+            {
+                lista.Add(new ValidationResult($"Erro no Genero", new[] { nameof(Genero) }));
+            }
+
+            if (!Enum.IsDefined(typeof(TipoUsuarioEnum), Tipo))
+            {
+                lista.Add(new ValidationResult($"Erro no Tipo", new[] { nameof(Tipo) }));
+            }
+
+            if (!Enum.IsDefined(typeof(StatusEnum), Status))
+            {
+                lista.Add(new ValidationResult($"Erro no status", new[] { nameof(Status) }));
+            }
+
+            return lista;
+        }
     }
 }

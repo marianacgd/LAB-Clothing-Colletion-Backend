@@ -88,9 +88,9 @@ namespace LABClothingCollection.API.Controllers
 
                 usuarioModel.NomeCompleto = usuarioUpdateDTO.NomeCompleto;
                 usuarioModel.Genero = usuarioUpdateDTO.Genero.GetDisplayName();
-                usuarioModel.DataNascimento = usuarioModel.DataNascimento;
-                usuarioModel.Telefone = usuarioModel.Telefone;
-                usuarioModel.Tipo = usuarioModel.Tipo;
+                usuarioModel.DataNascimento = usuarioUpdateDTO.DataNascimento;
+                usuarioModel.Telefone = usuarioUpdateDTO.Telefone;
+                usuarioModel.Tipo = usuarioUpdateDTO.Tipo;
 
                 if (!TryValidateModel(usuarioModel, nameof(usuarioModel)))
                 {
@@ -108,6 +108,34 @@ namespace LABClothingCollection.API.Controllers
             }
 
         }
+
+        [HttpPut("{identificador}/status")]
+        public ActionResult<UsuarioUpdateDTO> Put([FromRoute] int identificador, [FromBody] UsuarioUpdateStatusDTO usuarioUpdateStatusDTO)
+        {
+            try
+            {
+                if (!Enum.IsDefined(typeof(StatusEnum), usuarioUpdateStatusDTO.Status))
+                    return BadRequest(new { erro = "Status não existente" });
+
+                var usuarioModel = lABClothingCollectionDbContext.Usuarios.Where(w => w.Id == identificador).FirstOrDefault();
+
+                if (usuarioModel == null)
+                {
+                    return NotFound(new { erro = "Registro não encontrado" });
+                }
+
+                lABClothingCollectionDbContext.Usuarios.Update(usuarioModel);
+                lABClothingCollectionDbContext.SaveChanges();
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+
+        }
+
 
         // DELETE api/<UsuariosController>/5
         [HttpDelete("{id}")]
