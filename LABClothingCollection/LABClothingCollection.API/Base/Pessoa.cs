@@ -23,7 +23,7 @@ namespace LABClothingCollection.API.Base
         [Column(TypeName = "VARCHAR"), Required, StringLength(18)]
         public string Documento { get; set; }
 
-        [Column(TypeName = "VARCHAR"), Required, StringLength(11)]
+        [Column(TypeName = "VARCHAR"), StringLength(11)]
         public string? Telefone { get; set; }
     }
 }

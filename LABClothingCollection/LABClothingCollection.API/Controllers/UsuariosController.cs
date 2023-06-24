@@ -1,6 +1,7 @@
 ﻿using LABClothingCollection.API.DTO.Usuarios;
 using LABClothingCollection.API.Enums;
 using LABClothingCollection.API.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -53,7 +54,7 @@ namespace LABClothingCollection.API.Controllers
 
                 if (!TryValidateModel(usuarioModel, nameof(usuarioModel)))
                 {
-                    return BadRequest(new { erro = "Dados com erros");
+                    return BadRequest(new { erro = "Dados com erros" });
                 }
 
                 if (lABClothingCollectionDbContext.Usuarios.ToList().Exists(e => e.Documento == usuarioCreateDTO.Documento))
@@ -73,12 +74,39 @@ namespace LABClothingCollection.API.Controllers
 
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] UsuarioModel usuario)
+        [HttpPut("{identificador}")]
+        public ActionResult<UsuarioUpdateDTO> Put([FromRoute] int identificador, [FromBody] UsuarioUpdateDTO usuarioUpdateDTO)
         {
-            usuario.Id = id;
-            lABClothingCollectionDbContext.Usuarios.Update(usuario);
-            lABClothingCollectionDbContext.SaveChanges();
+            try
+            {
+                var usuarioModel = lABClothingCollectionDbContext.Usuarios.Where(w => w.Id == identificador).FirstOrDefault();
+
+                if (usuarioModel == null)
+                {
+                    return NotFound(new { erro = "Registro não encontrado" });
+                }
+
+                usuarioModel.NomeCompleto = usuarioUpdateDTO.NomeCompleto;
+                usuarioModel.Genero = usuarioUpdateDTO.Genero.GetDisplayName();
+                usuarioModel.DataNascimento = usuarioModel.DataNascimento;
+                usuarioModel.Telefone = usuarioModel.Telefone;
+                usuarioModel.Tipo = usuarioModel.Tipo;
+
+                if (!TryValidateModel(usuarioModel, nameof(usuarioModel)))
+                {
+                    return BadRequest(new { erro = "Dados com erros" });
+                }
+
+                lABClothingCollectionDbContext.Usuarios.Update(usuarioModel);
+                lABClothingCollectionDbContext.SaveChanges();
+
+                return Ok(usuarioUpdateDTO);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+
         }
 
         // DELETE api/<UsuariosController>/5
