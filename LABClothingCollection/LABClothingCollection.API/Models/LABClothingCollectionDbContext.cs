@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LABClothingCollection.API.Enums;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Collections.Generic;
 
 namespace LABClothingCollection.API.Models
@@ -11,6 +13,14 @@ namespace LABClothingCollection.API.Models
     {
         public LABClothingCollectionDbContext(DbContextOptions options) : base(options)
         {
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //modelBuilder
+            //    .Entity<UsuarioModel>()
+            //    .Property(e => e.Genero)
+            //    .HasConversion<EnumToStringConverter<GeneroEnum>>();
         }
 
         public virtual DbSet<UsuarioModel> Usuarios { get; set; }

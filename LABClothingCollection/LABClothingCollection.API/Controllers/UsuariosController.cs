@@ -1,5 +1,11 @@
-﻿using LABClothingCollection.API.Models;
+﻿using LABClothingCollection.API.DTO.Usuarios;
+using LABClothingCollection.API.Enums;
+using LABClothingCollection.API.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.OpenApi.Extensions;
+using System.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -29,10 +35,42 @@ namespace LABClothingCollection.API.Controllers
         }
 
         [HttpPost]
-        public void Post([FromBody] UsuarioModel usuario)
+        public ActionResult Post([FromBody] UsuarioCreateDTO usuarioCreateDTO)
         {
-            lABClothingCollectionDbContext.Usuarios.Add(usuario);
-            lABClothingCollectionDbContext.SaveChanges();
+            try
+            {
+                UsuarioModel usuarioModel = new()
+                {
+                    DataNascimento = usuarioCreateDTO.DataNascimento,
+                    Documento = usuarioCreateDTO.Documento,
+                    Email = usuarioCreateDTO.Email,
+                    Genero = usuarioCreateDTO.Genero.GetDisplayName(),
+                    NomeCompleto = usuarioCreateDTO.NomeCompleto,
+                    Status = usuarioCreateDTO.Status,
+                    Telefone = usuarioCreateDTO.Telefone,
+                    Tipo = usuarioCreateDTO.Tipo
+                };
+
+                if (!TryValidateModel(usuarioModel, nameof(usuarioModel)))
+                {
+                    return BadRequest(new { erro = "Dados com erros");
+                }
+
+                if (lABClothingCollectionDbContext.Usuarios.ToList().Exists(e => e.Documento == usuarioCreateDTO.Documento))
+                {
+                    return Conflict(new { erro = "CPNJ ou CPF já cadastrados" });
+                }
+
+                lABClothingCollectionDbContext.Usuarios.Add(usuarioModel);
+                lABClothingCollectionDbContext.SaveChanges();
+
+                return CreatedAtAction(nameof(Post), new { identficador = usuarioModel.Id, tipo = usuarioModel.Tipo });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+
         }
 
         [HttpPut("{id}")]
