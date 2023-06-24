@@ -1,10 +1,8 @@
 ﻿using LABClothingCollection.API.Base;
 using LABClothingCollection.API.Enums;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.CompilerServices;
 
 namespace LABClothingCollection.API.Models
 {
@@ -20,5 +18,7 @@ namespace LABClothingCollection.API.Models
 
         [Required]
         public StatusEnum Status { get; set; }
+
+        public virtual ICollection<ColecaoModel>? Colecao { get; set; }
     }
 }
