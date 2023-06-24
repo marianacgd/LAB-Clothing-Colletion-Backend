@@ -1,0 +1,18 @@
+﻿using LABClothingCollection.API.Enums;
+using System.ComponentModel.DataAnnotations;
+
+namespace LABClothingCollection.API.DTO.Usuarios
+{
+    public class UsuarioReadDTO
+    {
+        public int Id { get; set; }
+        public string NomeCompleto { get; set; }
+        public GeneroEnum Genero { get; set; }
+        public DateTime DataNascimento { get; set; }
+        public string Documento { get; set; }
+        public string? Telefone { get; set; }
+        public string Email { get; set; }
+        public TipoUsuarioEnum Tipo { get; set; }
+        public StatusEnum Status { get; set; }
+    }
+}

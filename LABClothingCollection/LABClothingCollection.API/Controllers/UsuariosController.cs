@@ -1,12 +1,8 @@
-﻿using LABClothingCollection.API.DTO.Usuarios;
+﻿using AutoMapper;
+using LABClothingCollection.API.DTO.Usuarios;
 using LABClothingCollection.API.Enums;
 using LABClothingCollection.API.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.OpenApi.Extensions;
-using System.Linq;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,16 +13,26 @@ namespace LABClothingCollection.API.Controllers
     public class UsuariosController : ControllerBase
     {
         private readonly LABClothingCollectionDbContext lABClothingCollectionDbContext;
+        private readonly IMapper mapper;
 
-        public UsuariosController(LABClothingCollectionDbContext lABClothingCollectionDbContext)
+        public UsuariosController(LABClothingCollectionDbContext lABClothingCollectionDbContext, IMapper mapper)
         {
             this.lABClothingCollectionDbContext = lABClothingCollectionDbContext;
+            this.mapper = mapper;
         }
 
         [HttpGet]
-        public IEnumerable<UsuarioModel> Get()
+        public ActionResult<IEnumerable<UsuarioReadDTO>> Get([FromQuery] StatusEnum? status)
         {
-            return lABClothingCollectionDbContext.Usuarios;
+            var usuarioModels = lABClothingCollectionDbContext.Usuarios.ToList();
+
+            if (status.HasValue)
+            {
+                usuarioModels = usuarioModels.Where(w => w.Status == status!).ToList();
+            }
+
+            var usuarioDTO = mapper.Map<List<UsuarioReadDTO>>(usuarioModels);
+            return Ok(usuarioDTO);
         }
 
         [HttpGet("{id}")]
@@ -36,21 +42,11 @@ namespace LABClothingCollection.API.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post([FromBody] UsuarioCreateDTO usuarioCreateDTO)
+        public ActionResult<UsuarioReadDTO> Post([FromBody] UsuarioCreateDTO usuarioCreateDTO)
         {
             try
             {
-                UsuarioModel usuarioModel = new()
-                {
-                    DataNascimento = usuarioCreateDTO.DataNascimento,
-                    Documento = usuarioCreateDTO.Documento,
-                    Email = usuarioCreateDTO.Email,
-                    Genero = usuarioCreateDTO.Genero.GetDisplayName(),
-                    NomeCompleto = usuarioCreateDTO.NomeCompleto,
-                    Status = usuarioCreateDTO.Status,
-                    Telefone = usuarioCreateDTO.Telefone,
-                    Tipo = usuarioCreateDTO.Tipo
-                };
+                var usuarioModel = mapper.Map<UsuarioModel>(usuarioCreateDTO);
 
                 if (!TryValidateModel(usuarioModel, nameof(usuarioModel)))
                 {
@@ -59,13 +55,19 @@ namespace LABClothingCollection.API.Controllers
 
                 if (lABClothingCollectionDbContext.Usuarios.ToList().Exists(e => e.Documento == usuarioCreateDTO.Documento))
                 {
-                    return Conflict(new { erro = "CPNJ ou CPF já cadastrados" });
+                    return Conflict(new { erro = "CPNJ ou CPF já cadastrado" });
+                }
+
+                if (lABClothingCollectionDbContext.Usuarios.ToList().Exists(e => e.Email.ToLower() == usuarioCreateDTO.Email.ToLower()))
+                {
+                    return Conflict(new { erro = "E-mail já cadastrado" });
                 }
 
                 lABClothingCollectionDbContext.Usuarios.Add(usuarioModel);
                 lABClothingCollectionDbContext.SaveChanges();
+                var usuarioDTO = RetornarUsuarioResponse(usuarioModel);
 
-                return CreatedAtAction(nameof(Post), new { identficador = usuarioModel.Id, tipo = usuarioModel.Tipo });
+                return CreatedAtAction(nameof(Post), usuarioDTO);
             }
             catch (Exception ex)
             {
@@ -75,7 +77,7 @@ namespace LABClothingCollection.API.Controllers
         }
 
         [HttpPut("{identificador}")]
-        public ActionResult<UsuarioUpdateDTO> Put([FromRoute] int identificador, [FromBody] UsuarioUpdateDTO usuarioUpdateDTO)
+        public ActionResult<UsuarioReadDTO> Put([FromRoute] int identificador, [FromBody] UsuarioUpdateDTO usuarioUpdateDTO)
         {
             try
             {
@@ -86,11 +88,7 @@ namespace LABClothingCollection.API.Controllers
                     return NotFound(new { erro = "Registro não encontrado" });
                 }
 
-                usuarioModel.NomeCompleto = usuarioUpdateDTO.NomeCompleto;
-                usuarioModel.Genero = usuarioUpdateDTO.Genero.GetDisplayName();
-                usuarioModel.DataNascimento = usuarioUpdateDTO.DataNascimento;
-                usuarioModel.Telefone = usuarioUpdateDTO.Telefone;
-                usuarioModel.Tipo = usuarioUpdateDTO.Tipo;
+                usuarioModel = mapper.Map(usuarioUpdateDTO, usuarioModel);
 
                 if (!TryValidateModel(usuarioModel, nameof(usuarioModel)))
                 {
@@ -100,7 +98,8 @@ namespace LABClothingCollection.API.Controllers
                 lABClothingCollectionDbContext.Usuarios.Update(usuarioModel);
                 lABClothingCollectionDbContext.SaveChanges();
 
-                return Ok(usuarioUpdateDTO);
+                var usuarioDTO = RetornarUsuarioResponse(usuarioModel);
+                return Ok(usuarioDTO);
             }
             catch (Exception ex)
             {
@@ -110,7 +109,7 @@ namespace LABClothingCollection.API.Controllers
         }
 
         [HttpPut("{identificador}/status")]
-        public ActionResult<UsuarioUpdateDTO> Put([FromRoute] int identificador, [FromBody] UsuarioUpdateStatusDTO usuarioUpdateStatusDTO)
+        public ActionResult<UsuarioReadDTO> Put([FromRoute] int identificador, [FromBody] UsuarioUpdateStatusDTO usuarioUpdateStatusDTO)
         {
             try
             {
@@ -126,16 +125,15 @@ namespace LABClothingCollection.API.Controllers
 
                 lABClothingCollectionDbContext.Usuarios.Update(usuarioModel);
                 lABClothingCollectionDbContext.SaveChanges();
+                var usuarioDTO = RetornarUsuarioResponse(usuarioModel);
 
-                return Ok();
+                return Ok(usuarioDTO);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, ex);
             }
-
-        }
-
+        }     
 
         // DELETE api/<UsuariosController>/5
         [HttpDelete("{id}")]
@@ -146,5 +144,11 @@ namespace LABClothingCollection.API.Controllers
             lABClothingCollectionDbContext.Usuarios.Remove(usuario);
             lABClothingCollectionDbContext.SaveChanges();
         }
+
+        private UsuarioReadDTO RetornarUsuarioResponse(UsuarioModel usuarioModel)
+        {
+            return mapper.Map<UsuarioReadDTO>(usuarioModel);
+        }
+
     }
 }
