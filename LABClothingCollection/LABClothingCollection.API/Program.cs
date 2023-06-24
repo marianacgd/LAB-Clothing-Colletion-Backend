@@ -12,6 +12,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddRouting(options =>
+{
+    options.LowercaseUrls = true;
+    options.LowercaseQueryStrings = true;
+});
+
 string connectionstring = builder.Configuration.GetConnectionString("ServerConnection")!;
 
 builder.Services.AddDbContext<LABClothingCollectionDbContext>(options => options.UseSqlServer(connectionstring));
