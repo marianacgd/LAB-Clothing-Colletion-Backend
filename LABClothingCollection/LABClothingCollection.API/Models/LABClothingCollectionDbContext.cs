@@ -17,13 +17,11 @@ namespace LABClothingCollection.API.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //modelBuilder
-            //    .Entity<UsuarioModel>()
-            //    .Property(e => e.Genero)
-            //    .HasConversion<EnumToStringConverter<GeneroEnum>>();
+
         }
 
         public virtual DbSet<UsuarioModel> Usuarios { get; set; }
+        public virtual DbSet<ColecaoModel> Colecoes { get; set; }
 
     }
 }
