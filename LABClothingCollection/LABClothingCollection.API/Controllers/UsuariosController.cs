@@ -35,10 +35,18 @@ namespace LABClothingCollection.API.Controllers
             return Ok(usuarioDTO);
         }
 
-        [HttpGet("{id}")]
-        public UsuarioModel Get(int id)
+        [HttpGet("{identificador}")]
+        public ActionResult<UsuarioReadDTO> Get(int identificador)
         {
-            return lABClothingCollectionDbContext.Usuarios.Find(id);
+            var usuarioModel = lABClothingCollectionDbContext.Usuarios.Find(identificador);
+
+            if (usuarioModel == null)
+            {
+                return NotFound(new { erro = "Registro não encontrado" });
+            }
+
+            var usuarioDTO = RetornarUsuarioResponse(usuarioModel);
+            return Ok(usuarioDTO);
         }
 
         [HttpPost]
@@ -113,9 +121,6 @@ namespace LABClothingCollection.API.Controllers
         {
             try
             {
-                if (!Enum.IsDefined(typeof(StatusEnum), usuarioUpdateStatusDTO.Status))
-                    return BadRequest(new { erro = "Status não existente" });
-
                 var usuarioModel = lABClothingCollectionDbContext.Usuarios.Where(w => w.Id == identificador).FirstOrDefault();
 
                 if (usuarioModel == null)
@@ -133,16 +138,6 @@ namespace LABClothingCollection.API.Controllers
             {
                 return StatusCode(500, ex);
             }
-        }     
-
-        // DELETE api/<UsuariosController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-            var usuario = lABClothingCollectionDbContext.Usuarios.Find(id);
-
-            lABClothingCollectionDbContext.Usuarios.Remove(usuario);
-            lABClothingCollectionDbContext.SaveChanges();
         }
 
         private UsuarioReadDTO RetornarUsuarioResponse(UsuarioModel usuarioModel)
