@@ -34,8 +34,10 @@ namespace LABClothingCollection.API.AutoMapper
 
         private void ModeloMapping()
         {
+            CreateMap<ColecaoModel, ModeloColecaoReadDTO>();
+
             CreateMap<ModeloModel, ModeloReadDTO>()
-                .ForMember(dest => dest.Colecao, opt => opt.MapFrom(src => src.Colecao));
+                .ForMember(dest => dest.Colecao, opt => opt.MapFrom(src => src.Colecao))                ;
 
             CreateMap<ModeloDTO, ModeloModel>();
 

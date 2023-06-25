@@ -71,11 +71,51 @@ namespace LABClothingCollection.API.Controllers
         }
 
 
-
-        // PUT api/<ModelosController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{identificador}")]
+        public ActionResult<ModeloReadDTO> Put(int identificador, [FromBody] ModeloDTO modeloUpdateDTO)
         {
+            try
+            {
+                var modeloModel = lABClothingCollectionDbContext.Modelos
+                                   .Include(c => c.Colecao)
+                                   .Include(u => u.Colecao.Responsavel)
+                                   .ToList()
+                                   .Find(f => f.Id == identificador);
+
+                if (modeloModel == null)
+                {
+                    return NotFound(new { erro = "Registro não encontrado" });
+                }
+
+                var nomeExiste = lABClothingCollectionDbContext.Modelos                                  
+                                        .ToList()
+                                        .Exists(e => e.Nome.ToLower() == modeloUpdateDTO.Nome.ToLower() && e.Id != identificador);
+
+                if (nomeExiste)
+                {
+                    return Conflict(new { erro = "Informe outro nome de modelo" });
+                }
+
+                modeloModel = mapper.Map(modeloUpdateDTO, modeloModel);
+
+                var colecaoModel = BuscarColecao(modeloUpdateDTO.ColecaoId);
+                modeloModel.Colecao = colecaoModel!;
+
+                if (!TryValidateModel(colecaoModel!, nameof(colecaoModel)))
+                {
+                    return BadRequest(new { erro = "Dados com erros" });
+                }
+
+                lABClothingCollectionDbContext.Modelos.Update(modeloModel);
+                lABClothingCollectionDbContext.SaveChanges();
+                var modeloReadDTO = RetornarModeloResponse(modeloModel);
+               
+                return Ok(modeloReadDTO);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
         }
 
         // DELETE api/<ModelosController>/5
@@ -92,7 +132,7 @@ namespace LABClothingCollection.API.Controllers
         private ColecaoModel? BuscarColecao(int responsavelId)
         {
             return lABClothingCollectionDbContext.Colecoes
-                                                 .Include(u => u.Responsavel)
+                                                 .Include(r => r.Responsavel)
                                                  .Where(w => w.Id == responsavelId).FirstOrDefault();
         }
     }
