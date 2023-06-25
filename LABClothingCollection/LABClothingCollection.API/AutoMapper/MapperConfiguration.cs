@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LABClothingCollection.API.DTO.Colecoes;
+using LABClothingCollection.API.DTO.Modelos;
 using LABClothingCollection.API.DTO.Usuarios;
 using LABClothingCollection.API.Models;
 
@@ -11,6 +12,7 @@ namespace LABClothingCollection.API.AutoMapper
         {
             UsuarioMapping();
             ColecaoMapping();
+            ModeloMapping();
         }
 
         private void UsuarioMapping()
@@ -27,6 +29,15 @@ namespace LABClothingCollection.API.AutoMapper
             
             CreateMap<ColecaoDTO, ColecaoModel>();
             CreateMap<ColecaoUpdateStatusDTO, ColecaoModel>();
+
+        }
+
+        private void ModeloMapping()
+        {
+            CreateMap<ModeloModel, ModeloReadDTO>()
+                .ForMember(dest => dest.Colecao, opt => opt.MapFrom(src => src.Colecao));
+
+            CreateMap<ModeloDTO, ModeloModel>();
 
         }
     }

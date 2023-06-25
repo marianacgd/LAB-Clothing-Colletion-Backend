@@ -106,7 +106,7 @@ namespace LABClothingCollection.API.Controllers
 
                 var nomeExiste = lABClothingCollectionDbContext.Colecoes
                                         .ToList()
-                                        .Exists(e => e.Nome.ToLower() == colecaoUpdateDTO.Nome && e.Id != identificador);
+                                        .Exists(e => e.Nome.ToLower() == colecaoUpdateDTO.Nome.ToLower() && e.Id != identificador);
 
                 if (nomeExiste)
                 {
@@ -192,9 +192,9 @@ namespace LABClothingCollection.API.Controllers
             }
         }
 
-        private ColecaoReadDTO RetornarColecaoResponse(ColecaoModel usuarioModel)
+        private ColecaoReadDTO RetornarColecaoResponse(ColecaoModel colecaoModel)
         {
-            return mapper.Map<ColecaoReadDTO>(usuarioModel);
+            return mapper.Map<ColecaoReadDTO>(colecaoModel);
         }
 
         private UsuarioModel? BuscarUsuario(int responsavelId)
