@@ -138,11 +138,30 @@ namespace LABClothingCollection.API.Controllers
             }
         }
 
-        // DELETE api/<ModelosController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{identificador}")]
+        public ActionResult Delete(int identificador)
         {
+            try
+            {
+                var modeloModel = lABClothingCollectionDbContext.Modelos.Find(identificador);
+
+                if (modeloModel == null)
+                {
+                    return NotFound(new { erro = "Registro não encontrado" });
+                }
+
+                lABClothingCollectionDbContext.Modelos.Remove(modeloModel);
+                lABClothingCollectionDbContext.SaveChanges();
+
+                return StatusCode(204);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
         }
+
 
         private ModeloReadDTO RetornarModeloResponse(ModeloModel modeloModel)
         {
