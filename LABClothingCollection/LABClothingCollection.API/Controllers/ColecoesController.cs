@@ -24,7 +24,7 @@ namespace LABClothingCollection.API.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<UsuarioReadDTO>> Get([FromQuery] StatusEnum? status)
+        public ActionResult<IEnumerable<ColecaoReadDTO>> Get([FromQuery] StatusEnum? status)
         {
             var colecaoModels = lABClothingCollectionDbContext.Colecoes
                                    .Include(u => u.Responsavel)
@@ -40,11 +40,21 @@ namespace LABClothingCollection.API.Controllers
         }
 
 
-        // GET api/<ColecoesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{identificador}")]
+        public ActionResult<ColecaoReadDTO> Get(int identificador)
         {
-            return "value";
+            var colecaoModel = lABClothingCollectionDbContext.Colecoes
+                                   .Include(u => u.Responsavel)
+                                   .Where(w => w.Id == identificador)
+                                   .FirstOrDefault();
+
+            if (colecaoModel == null)
+            {
+                return NotFound(new { erro = "Registro não encontrado" });
+            }
+
+            var colecaoDTO = RetornarColecaoResponse(colecaoModel);
+            return Ok(colecaoDTO);
         }
 
         [HttpPost]
