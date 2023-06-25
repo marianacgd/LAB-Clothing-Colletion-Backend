@@ -3,6 +3,7 @@ using LABClothingCollection.API.DTO.Colecoes;
 using LABClothingCollection.API.DTO.Usuarios;
 using LABClothingCollection.API.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -36,12 +37,12 @@ namespace LABClothingCollection.API.Controllers
         }
 
         [HttpPost]
-        public ActionResult<ColecaoReadDTO> Post([FromBody] ColecaoCreateDTO colecaoCreateDTO)
+        public ActionResult<ColecaoReadDTO> Post([FromBody] ColecaoDTO colecaoCreateDTO)
         {
             try
             {
                 var colecaoModel = mapper.Map<ColecaoModel>(colecaoCreateDTO);
-                var responsavelModel = lABClothingCollectionDbContext.Usuarios.Where(w => w.Id== colecaoCreateDTO.ResponsavelId).FirstOrDefault();
+                var responsavelModel = BuscarUsuario(colecaoCreateDTO.ResponsavelId);
 
                 colecaoModel.Responsavel = responsavelModel!;
 
@@ -57,7 +58,7 @@ namespace LABClothingCollection.API.Controllers
 
                 lABClothingCollectionDbContext.Colecoes.Add(colecaoModel);
                 lABClothingCollectionDbContext.SaveChanges();
-                var colecaoDTO = RetornarColecaoResponse(colecaoModel);
+                var colecaoDTO =  RetornarColecaoResponse(colecaoModel);
 
                 return CreatedAtAction(nameof(Post), colecaoDTO);
             }
@@ -67,10 +68,50 @@ namespace LABClothingCollection.API.Controllers
             }
         }
 
-        // PUT api/<ColecoesController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{identificador}")]
+        public ActionResult<ColecaoReadDTO> Put(int identificador, [FromBody] ColecaoDTO colecaoUpdateDTO)
         {
+            try
+            {
+                var colecaoModel = lABClothingCollectionDbContext.Colecoes
+                                   .Include(u => u.Responsavel)
+                                   .ToList()
+                                   .Find(f => f.Id == identificador);
+
+                if (colecaoModel == null)
+                {
+                    return NotFound(new { erro = "Registro não encontrado" });
+                }
+
+                var nomeExiste = lABClothingCollectionDbContext.Colecoes
+                                        .ToList()
+                                        .Exists(e => e.Nome.ToLower() == colecaoUpdateDTO.Nome && e.Id != identificador);
+
+                if (nomeExiste)
+                {
+                    return Conflict(new { erro = "Informe outro nome de coleção" });
+                }
+
+                colecaoModel = mapper.Map(colecaoUpdateDTO, colecaoModel);
+
+                var responsavelModel = BuscarUsuario(colecaoUpdateDTO.ResponsavelId);
+                colecaoModel.Responsavel = responsavelModel!;
+
+                if (!TryValidateModel(colecaoModel, nameof(colecaoModel)))
+                {
+                    return BadRequest(new { erro = "Dados com erros" });
+                }
+
+                lABClothingCollectionDbContext.Colecoes.Update(colecaoModel);
+                lABClothingCollectionDbContext.SaveChanges();
+                var colecaoDTO = RetornarColecaoResponse(colecaoModel);
+
+                return Ok(colecaoDTO);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
         }
 
         // DELETE api/<ColecoesController>/5
@@ -82,6 +123,11 @@ namespace LABClothingCollection.API.Controllers
         private ColecaoReadDTO RetornarColecaoResponse(ColecaoModel usuarioModel)
         {
             return mapper.Map<ColecaoReadDTO>(usuarioModel);
+        }
+
+        private UsuarioModel? BuscarUsuario(int responsavelId)
+        {
+            return lABClothingCollectionDbContext.Usuarios.Where(w => w.Id == responsavelId).FirstOrDefault();
         }
     }
 }

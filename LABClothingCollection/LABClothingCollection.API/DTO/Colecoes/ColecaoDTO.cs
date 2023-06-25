@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace LABClothingCollection.API.DTO.Colecoes
 {
-    public class ColecaoCreateDTO : IValidatableObject
+    public class ColecaoDTO : IValidatableObject
     {
         [Required(ErrorMessage = "Campo Obrigatório")]
         [MaxLength(100, ErrorMessage = "Este campo aceita até 100 caracteres")]
