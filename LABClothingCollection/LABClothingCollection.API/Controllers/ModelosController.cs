@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using LABClothingCollection.API.DTO.Colecoes;
 using LABClothingCollection.API.DTO.Modelos;
+using LABClothingCollection.API.Enums;
 using LABClothingCollection.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -56,11 +57,20 @@ namespace LABClothingCollection.API.Controllers
             }
         }
 
-        // GET: api/<ModelosController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public ActionResult<IEnumerable<ModeloReadDTO>> Get([FromQuery] LayoutEnum? layout)
         {
-            return new string[] { "value1", "value2" };
+            var modeloModels = lABClothingCollectionDbContext.Modelos
+                                   .Include(c => c.Colecao)
+                                   .ToList();
+
+            if (layout.HasValue)
+            {
+                modeloModels = modeloModels.Where(w => w.Layout == layout!).ToList();
+            }
+
+            var modeloReadDTOs = mapper.Map<List<ModeloReadDTO>>(modeloModels);
+            return Ok(modeloReadDTOs);
         }
 
         // GET api/<ModelosController>/5
