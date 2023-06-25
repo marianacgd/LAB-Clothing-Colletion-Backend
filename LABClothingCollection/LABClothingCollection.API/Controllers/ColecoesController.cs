@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using LABClothingCollection.API.DTO.Colecoes;
 using LABClothingCollection.API.DTO.Usuarios;
+using LABClothingCollection.API.Enums;
 using LABClothingCollection.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,12 +23,22 @@ namespace LABClothingCollection.API.Controllers
             this.mapper = mapper;
         }
 
-        // GET: api/<ColecoesController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        public ActionResult<IEnumerable<UsuarioReadDTO>> Get([FromQuery] StatusEnum? status)
         {
-            return new string[] { "value1", "value2" };
+            var colecaoModels = lABClothingCollectionDbContext.Colecoes
+                                   .Include(u => u.Responsavel)
+                                   .ToList();
+
+            if (status.HasValue)
+            {
+                colecaoModels = colecaoModels.Where(w => w.StatusSistema == status!).ToList();
+            }
+
+            var colecoesDTO = mapper.Map<List<ColecaoReadDTO>>(colecaoModels);
+            return Ok(colecoesDTO);
         }
+
 
         // GET api/<ColecoesController>/5
         [HttpGet("{id}")]
