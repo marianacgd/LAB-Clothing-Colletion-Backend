@@ -1,4 +1,6 @@
-﻿using LABClothingCollection.API.Enums;
+﻿using LABClothingCollection.API.DTO.Colecoes;
+using LABClothingCollection.API.DTO.Usuarios;
+using LABClothingCollection.API.Enums;
 using LABClothingCollection.API.Models;
 
 namespace LABClothingCollection.API.DTO.Modelos
@@ -9,6 +11,6 @@ namespace LABClothingCollection.API.DTO.Modelos
         public string Nome { get; set; }
         public TipoEnum Tipo { get; set; }
         public LayoutEnum Layout { get; set; }
-        public ColecaoModel Colecao { get; set; }
+        public ModeloColecaoReadDTO Colecao { get; set; }
     }
 }
