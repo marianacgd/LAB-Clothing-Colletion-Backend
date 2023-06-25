@@ -73,11 +73,21 @@ namespace LABClothingCollection.API.Controllers
             return Ok(modeloReadDTOs);
         }
 
-        // GET api/<ModelosController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("{identificador}")]
+        public ActionResult<ColecaoReadDTO> Get(int identificador)
         {
-            return "value";
+            var modeloModel = lABClothingCollectionDbContext.Modelos
+                                   .Include(c => c.Colecao)
+                                   .Where(w => w.Id == identificador)
+                                   .FirstOrDefault();
+
+            if (modeloModel == null)
+            {
+                return NotFound(new { erro = "Registro não encontrado" });
+            }
+
+            var modeloReadDTO = RetornarModeloResponse(modeloModel);
+            return Ok(modeloReadDTO);
         }
 
 
