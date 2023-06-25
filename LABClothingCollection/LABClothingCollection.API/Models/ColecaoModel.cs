@@ -31,6 +31,8 @@ namespace LABClothingCollection.API.Models
         [Required]
         public StatusEnum StatusSistema { get; set; }
 
+        public int ResponsavelId { get; set; }
+
         [Required]
         public virtual UsuarioModel Responsavel { get; set; }
 

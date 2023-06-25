@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace LABClothingCollection.API.Migrations
 {
     /// <inheritdoc />
@@ -76,6 +78,39 @@ namespace LABClothingCollection.API.Migrations
                         principalTable: "Colecao",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.InsertData(
+                table: "Usuario",
+                columns: new[] { "Id", "DataNascimento", "Documento", "Email", "Genero", "NomeCompleto", "Status", "Telefone", "Tipo" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(1990, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "23188028075", "iancauerezende@htmail.com", "Feminino", "Mariana De Carvalho Gonçaves Daruix", 1, "86996448176", 0 },
+                    { 2, new DateTime(1964, 6, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "25527501764", "levi.murilo.porto@bidoul.eng.br", "Masculino", "Levi Murilo Caio Porto", 0, "83995624145", 2 },
+                    { 3, new DateTime(2002, 1, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "83934472000149", "isabella_marina_nunes@uol.com.bt", "Feminino", "Isabella Marina Nunes", 1, "48991551385", 1 },
+                    { 4, new DateTime(1984, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "81994451300", "alinebrendafreitas@yaooll.com", "Feminino", "Aline Brenda Freitas", 1, "11981604710", 3 },
+                    { 5, new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "78140716669", "veraisadoracortereal@mtic.net.br", "Feminino", "Vera Isadora Corte Real", 0, "61994063594", 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Colecao",
+                columns: new[] { "Id", "AnoLancamento", "Estacao", "Marca", "Nome", "Orcamento", "ResponsavelId", "StatusSistema" },
+                values: new object[,]
+                {
+                    { 1, 2022, 1, "CeA", "Colecao Inverno", 145987.98m, 3, 1 },
+                    { 2, 2050, 3, "MARISA", "Colecao Verao", 45398.01m, 1, 0 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Modelo",
+                columns: new[] { "Id", "ColecaoId", "Layout", "Nome", "Tipo" },
+                values: new object[,]
+                {
+                    { 1, 1, 2, "Modelo A Colecao Inverno", 5 },
+                    { 2, 1, 1, "Modelo B Colecao Inverno", 7 },
+                    { 3, 1, 3, "Modelo C Colecao Inverno", 1 },
+                    { 4, 2, 1, "Modelo A Colecao VERAO", 1 },
+                    { 5, 2, 3, "Modelo B Colecao VERAO", 2 }
                 });
 
             migrationBuilder.CreateIndex(

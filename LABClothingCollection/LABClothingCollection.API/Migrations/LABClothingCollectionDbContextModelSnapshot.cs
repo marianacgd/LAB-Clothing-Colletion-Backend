@@ -63,6 +63,30 @@ namespace LABClothingCollection.API.Migrations
                     b.HasIndex("ResponsavelId");
 
                     b.ToTable("Colecao");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AnoLancamento = 2022,
+                            Estacao = 1,
+                            Marca = "CeA",
+                            Nome = "Colecao Inverno",
+                            Orcamento = 145987.98m,
+                            ResponsavelId = 3,
+                            StatusSistema = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AnoLancamento = 2050,
+                            Estacao = 3,
+                            Marca = "MARISA",
+                            Nome = "Colecao Verao",
+                            Orcamento = 45398.01m,
+                            ResponsavelId = 1,
+                            StatusSistema = 0
+                        });
                 });
 
             modelBuilder.Entity("LABClothingCollection.API.Models.ModeloModel", b =>
@@ -95,6 +119,48 @@ namespace LABClothingCollection.API.Migrations
                         .IsUnique();
 
                     b.ToTable("Modelo");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ColecaoId = 1,
+                            Layout = 2,
+                            Nome = "Modelo A Colecao Inverno",
+                            Tipo = 5
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ColecaoId = 1,
+                            Layout = 1,
+                            Nome = "Modelo B Colecao Inverno",
+                            Tipo = 7
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ColecaoId = 1,
+                            Layout = 3,
+                            Nome = "Modelo C Colecao Inverno",
+                            Tipo = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ColecaoId = 2,
+                            Layout = 1,
+                            Nome = "Modelo A Colecao VERAO",
+                            Tipo = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ColecaoId = 2,
+                            Layout = 3,
+                            Nome = "Modelo B Colecao VERAO",
+                            Tipo = 2
+                        });
                 });
 
             modelBuilder.Entity("LABClothingCollection.API.Models.UsuarioModel", b =>
@@ -144,6 +210,68 @@ namespace LABClothingCollection.API.Migrations
                         .IsUnique();
 
                     b.ToTable("Usuario");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DataNascimento = new DateTime(1990, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Documento = "23188028075",
+                            Email = "iancauerezende@htmail.com",
+                            Genero = "Feminino",
+                            NomeCompleto = "Mariana De Carvalho Gonçaves Daruix",
+                            Status = 1,
+                            Telefone = "86996448176",
+                            Tipo = 0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DataNascimento = new DateTime(1964, 6, 8, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Documento = "25527501764",
+                            Email = "levi.murilo.porto@bidoul.eng.br",
+                            Genero = "Masculino",
+                            NomeCompleto = "Levi Murilo Caio Porto",
+                            Status = 0,
+                            Telefone = "83995624145",
+                            Tipo = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DataNascimento = new DateTime(2002, 1, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Documento = "83934472000149",
+                            Email = "isabella_marina_nunes@uol.com.bt",
+                            Genero = "Feminino",
+                            NomeCompleto = "Isabella Marina Nunes",
+                            Status = 1,
+                            Telefone = "48991551385",
+                            Tipo = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            DataNascimento = new DateTime(1984, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Documento = "81994451300",
+                            Email = "alinebrendafreitas@yaooll.com",
+                            Genero = "Feminino",
+                            NomeCompleto = "Aline Brenda Freitas",
+                            Status = 1,
+                            Telefone = "11981604710",
+                            Tipo = 3
+                        },
+                        new
+                        {
+                            Id = 5,
+                            DataNascimento = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Documento = "78140716669",
+                            Email = "veraisadoracortereal@mtic.net.br",
+                            Genero = "Feminino",
+                            NomeCompleto = "Vera Isadora Corte Real",
+                            Status = 0,
+                            Telefone = "61994063594",
+                            Tipo = 1
+                        });
                 });
 
             modelBuilder.Entity("LABClothingCollection.API.Models.ColecaoModel", b =>
