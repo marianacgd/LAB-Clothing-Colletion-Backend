@@ -128,6 +128,8 @@ namespace LABClothingCollection.API.Controllers
                     return NotFound(new { erro = "Registro não encontrado" });
                 }
 
+                usuarioModel = mapper.Map(usuarioUpdateStatusDTO, usuarioModel);
+
                 lABClothingCollectionDbContext.Usuarios.Update(usuarioModel);
                 lABClothingCollectionDbContext.SaveChanges();
                 var usuarioDTO = RetornarUsuarioResponse(usuarioModel);

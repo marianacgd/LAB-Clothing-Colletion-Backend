@@ -114,6 +114,43 @@ namespace LABClothingCollection.API.Controllers
             }
         }
 
+
+        [HttpPut("{identificador}/status")]
+        public ActionResult<ColecaoReadDTO> Put([FromRoute] int identificador, [FromBody] ColecaoUpdateStatusDTO colecaoUpdateStatusDTO)
+        {
+            try
+            {
+                var colecaoModel = lABClothingCollectionDbContext.Colecoes
+                                   .Include(u => u.Responsavel)
+                                   .ToList()
+                                   .Find(f => f.Id == identificador);
+
+                if (colecaoModel == null)
+                {
+                    return NotFound(new { erro = "Registro não encontrado" });
+                }
+
+                colecaoModel = mapper.Map(colecaoUpdateStatusDTO, colecaoModel);
+
+                lABClothingCollectionDbContext.Colecoes.Update(colecaoModel);
+                lABClothingCollectionDbContext.SaveChanges();
+                var colecaoDTO = RetornarColecaoResponse(colecaoModel);
+
+                return Ok(colecaoDTO);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
+
+
+
+
+
+
+
         // DELETE api/<ColecoesController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)

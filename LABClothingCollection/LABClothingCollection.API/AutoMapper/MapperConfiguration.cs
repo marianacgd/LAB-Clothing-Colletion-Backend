@@ -24,7 +24,10 @@ namespace LABClothingCollection.API.AutoMapper
         {
             CreateMap<ColecaoModel, ColecaoReadDTO>()
                 .ForMember(dest => dest.Responsavel, opt => opt.MapFrom(src => src.Responsavel));
+            
             CreateMap<ColecaoDTO, ColecaoModel>();
+            CreateMap<ColecaoUpdateStatusDTO, ColecaoModel>();
+
         }
     }
 }
