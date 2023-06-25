@@ -65,6 +65,38 @@ namespace LABClothingCollection.API.Migrations
                     b.ToTable("Colecao");
                 });
 
+            modelBuilder.Entity("LABClothingCollection.API.Models.ModeloModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ColecaoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Layout")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("VARCHAR");
+
+                    b.Property<int>("Tipo")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ColecaoId");
+
+                    b.HasIndex("Nome")
+                        .IsUnique();
+
+                    b.ToTable("Modelo");
+                });
+
             modelBuilder.Entity("LABClothingCollection.API.Models.UsuarioModel", b =>
                 {
                     b.Property<int>("Id")
@@ -119,10 +151,26 @@ namespace LABClothingCollection.API.Migrations
                     b.HasOne("LABClothingCollection.API.Models.UsuarioModel", "Responsavel")
                         .WithMany("Colecao")
                         .HasForeignKey("ResponsavelId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Responsavel");
+                });
+
+            modelBuilder.Entity("LABClothingCollection.API.Models.ModeloModel", b =>
+                {
+                    b.HasOne("LABClothingCollection.API.Models.ColecaoModel", "Colecao")
+                        .WithMany("Modelos")
+                        .HasForeignKey("ColecaoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Colecao");
+                });
+
+            modelBuilder.Entity("LABClothingCollection.API.Models.ColecaoModel", b =>
+                {
+                    b.Navigation("Modelos");
                 });
 
             modelBuilder.Entity("LABClothingCollection.API.Models.UsuarioModel", b =>

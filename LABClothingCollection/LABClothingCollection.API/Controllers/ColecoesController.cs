@@ -79,7 +79,7 @@ namespace LABClothingCollection.API.Controllers
 
                 lABClothingCollectionDbContext.Colecoes.Add(colecaoModel);
                 lABClothingCollectionDbContext.SaveChanges();
-                var colecaoDTO =  RetornarColecaoResponse(colecaoModel);
+                var colecaoDTO = RetornarColecaoResponse(colecaoModel);
 
                 return CreatedAtAction(nameof(Post), colecaoDTO);
             }
@@ -165,17 +165,31 @@ namespace LABClothingCollection.API.Controllers
             }
         }
 
-
-
-
-
-
-
-
-        // DELETE api/<ColecoesController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{identificador}")]
+        public ActionResult Delete(int identificador)
         {
+            try
+            {
+                var colecaoModel = lABClothingCollectionDbContext.Colecoes
+                                            .Include(u => u.Modelos)
+                                            .Where(w => w.Id == identificador && w.StatusSistema == StatusEnum.Inativo)
+                                            .FirstOrDefault();
+
+                if (colecaoModel == null || colecaoModel.Modelos!.Count > 0)
+                {
+                    return NotFound(new { erro = "Registro não encontrado" });
+                }
+
+                lABClothingCollectionDbContext.Colecoes.Remove(colecaoModel);
+                lABClothingCollectionDbContext.SaveChanges();
+
+                return StatusCode(204);
+
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
         }
 
         private ColecaoReadDTO RetornarColecaoResponse(ColecaoModel usuarioModel)
