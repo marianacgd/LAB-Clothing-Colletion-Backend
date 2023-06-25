@@ -31,6 +31,9 @@ namespace LABClothingCollection.API.Models
         [Required]
         public StatusEnum StatusSistema { get; set; }
 
+        [Required]
         public virtual UsuarioModel Responsavel { get; set; }
+
+        public virtual ICollection<ModeloModel>? Modelos { get; set; }
     }
 }
