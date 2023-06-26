@@ -85,11 +85,11 @@ namespace LABClothingCollection.API.Migrations
                 columns: new[] { "Id", "DataNascimento", "Documento", "Email", "Genero", "NomeCompleto", "Status", "Telefone", "Tipo" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(1990, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified), "23188028075", "iancauerezende@htmail.com", "Feminino", "Mariana De Carvalho Gonçaves Daruix", 1, "86996448176", 0 },
-                    { 2, new DateTime(1964, 6, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "25527501764", "levi.murilo.porto@bidoul.eng.br", "Masculino", "Levi Murilo Caio Porto", 0, "83995624145", 2 },
-                    { 3, new DateTime(2002, 1, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "83934472000149", "isabella_marina_nunes@uol.com.bt", "Feminino", "Isabella Marina Nunes", 1, "48991551385", 1 },
-                    { 4, new DateTime(1984, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "81994451300", "alinebrendafreitas@yaooll.com", "Feminino", "Aline Brenda Freitas", 1, "11981604710", 3 },
-                    { 5, new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "78140716669", "veraisadoracortereal@mtic.net.br", "Feminino", "Vera Isadora Corte Real", 0, "61994063594", 1 }
+                    { 1, new DateTime(1990, 6, 26, 0, 0, 0, 0, DateTimeKind.Unspecified), "23188028075", "marianadcgd@hotmail.com", "Feminino", "Mariana De Carvalho Gonçaves Daruix", 1, "11996448176", 0 },
+                    { 2, new DateTime(1964, 6, 8, 0, 0, 0, 0, DateTimeKind.Unspecified), "25527501764", "levi.murilo.porto@bidoul.eng.br", "Masculino", "Levi Murilo Caio Porto", 0, "11995624145", 2 },
+                    { 3, new DateTime(2001, 1, 7, 0, 0, 0, 0, DateTimeKind.Unspecified), "83934472000149", "isabella_marina_nunes@uol.com.br", "Feminino", "Isabella Marina Nunes", 1, "11991551385", 1 },
+                    { 4, new DateTime(1984, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), "81994451300", "alinebrendafreitas@yahoo.com", "Feminino", "Aline Brenda Freitas", 1, "11981604710", 3 },
+                    { 5, new DateTime(1970, 1, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "78140716669", "veraisadoracortereal@mtic.net.br", "Feminino", "Vera Isadora Corte Real", 0, "11994063594", 1 }
                 });
 
             migrationBuilder.InsertData(

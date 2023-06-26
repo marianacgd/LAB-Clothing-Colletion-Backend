@@ -215,13 +215,13 @@ namespace LABClothingCollection.API.Migrations
                         new
                         {
                             Id = 1,
-                            DataNascimento = new DateTime(1990, 8, 22, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DataNascimento = new DateTime(1990, 6, 26, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Documento = "23188028075",
-                            Email = "iancauerezende@htmail.com",
+                            Email = "marianadcgd@hotmail.com",
                             Genero = "Feminino",
                             NomeCompleto = "Mariana De Carvalho Gonçaves Daruix",
                             Status = 1,
-                            Telefone = "86996448176",
+                            Telefone = "11996448176",
                             Tipo = 0
                         },
                         new
@@ -233,19 +233,19 @@ namespace LABClothingCollection.API.Migrations
                             Genero = "Masculino",
                             NomeCompleto = "Levi Murilo Caio Porto",
                             Status = 0,
-                            Telefone = "83995624145",
+                            Telefone = "11995624145",
                             Tipo = 2
                         },
                         new
                         {
                             Id = 3,
-                            DataNascimento = new DateTime(2002, 1, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DataNascimento = new DateTime(2001, 1, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Documento = "83934472000149",
-                            Email = "isabella_marina_nunes@uol.com.bt",
+                            Email = "isabella_marina_nunes@uol.com.br",
                             Genero = "Feminino",
                             NomeCompleto = "Isabella Marina Nunes",
                             Status = 1,
-                            Telefone = "48991551385",
+                            Telefone = "11991551385",
                             Tipo = 1
                         },
                         new
@@ -253,7 +253,7 @@ namespace LABClothingCollection.API.Migrations
                             Id = 4,
                             DataNascimento = new DateTime(1984, 2, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Documento = "81994451300",
-                            Email = "alinebrendafreitas@yaooll.com",
+                            Email = "alinebrendafreitas@yahoo.com",
                             Genero = "Feminino",
                             NomeCompleto = "Aline Brenda Freitas",
                             Status = 1,
@@ -263,13 +263,13 @@ namespace LABClothingCollection.API.Migrations
                         new
                         {
                             Id = 5,
-                            DataNascimento = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DataNascimento = new DateTime(1970, 1, 11, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Documento = "78140716669",
                             Email = "veraisadoracortereal@mtic.net.br",
                             Genero = "Feminino",
                             NomeCompleto = "Vera Isadora Corte Real",
                             Status = 0,
-                            Telefone = "61994063594",
+                            Telefone = "11994063594",
                             Tipo = 1
                         });
                 });
