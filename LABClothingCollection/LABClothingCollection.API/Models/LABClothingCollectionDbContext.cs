@@ -44,11 +44,11 @@ namespace LABClothingCollection.API.Models
                   Id = 1,
                   NomeCompleto = "Mariana De Carvalho Gonçaves Daruix",
                   Documento = "23188028075",
-                  DataNascimento = Convert.ToDateTime("1990-08-22"),
-                  Email = "iancauerezende@htmail.com",
+                  DataNascimento = Convert.ToDateTime("1990-06-26"),
+                  Email = "marianadcgd@hotmail.com",
                   Genero = GeneroEnum.Feminino.GetDisplayName(),
                   Status = StatusEnum.Ativo,
-                  Telefone = "86996448176",
+                  Telefone = "11996448176",
                   Tipo = TipoUsuarioEnum.Administrador
               },
               new UsuarioModel
@@ -60,19 +60,19 @@ namespace LABClothingCollection.API.Models
                   Email = "levi.murilo.porto@bidoul.eng.br",
                   Genero = GeneroEnum.Masculino.GetDisplayName(),
                   Status = StatusEnum.Inativo,
-                  Telefone = "83995624145",
-                  Tipo = TipoUsuarioEnum.Cridor
+                  Telefone = "11995624145",
+                  Tipo = TipoUsuarioEnum.Criador
               },
               new UsuarioModel
               {
                   Id = 3,
                   NomeCompleto = "Isabella Marina Nunes",
                   Documento = "83934472000149",
-                  DataNascimento = Convert.ToDateTime("2002-01-07"),
-                  Email = "isabella_marina_nunes@uol.com.bt",
+                  DataNascimento = Convert.ToDateTime("2001-01-07"),
+                  Email = "isabella_marina_nunes@uol.com.br",
                   Genero = GeneroEnum.Feminino.GetDisplayName(),
                   Status = StatusEnum.Ativo,
-                  Telefone = "48991551385",
+                  Telefone = "11991551385",
                   Tipo = TipoUsuarioEnum.Gerente
               },
               new UsuarioModel
@@ -81,7 +81,7 @@ namespace LABClothingCollection.API.Models
                   NomeCompleto = "Aline Brenda Freitas",
                   Documento = "81994451300",
                   DataNascimento = Convert.ToDateTime("1984-02-10"),
-                  Email = "alinebrendafreitas@yaooll.com",
+                  Email = "alinebrendafreitas@yahoo.com",
                   Genero = GeneroEnum.Feminino.GetDisplayName(),
                   Status = StatusEnum.Ativo,
                   Telefone = "11981604710",
@@ -92,11 +92,11 @@ namespace LABClothingCollection.API.Models
                     Id = 5,
                     NomeCompleto = "Vera Isadora Corte Real",
                     Documento = "78140716669",
-                    DataNascimento = Convert.ToDateTime("1970-01-01"),
+                    DataNascimento = Convert.ToDateTime("1970-01-11"),
                     Email = "veraisadoracortereal@mtic.net.br",
                     Genero = GeneroEnum.Feminino.GetDisplayName(),
                     Status = StatusEnum.Inativo,
-                    Telefone = "61994063594",
+                    Telefone = "11994063594",
                     Tipo = TipoUsuarioEnum.Gerente
                 }
           );

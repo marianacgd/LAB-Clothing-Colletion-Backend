@@ -4,7 +4,7 @@
     {
         Administrador = 0,
         Gerente = 1,
-        Cridor = 2,
+        Criador = 2,
         Outro = 3
     }
 }
