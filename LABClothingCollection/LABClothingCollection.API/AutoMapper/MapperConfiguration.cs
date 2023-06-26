@@ -20,8 +20,9 @@ namespace LABClothingCollection.API.AutoMapper
             CreateMap<UsuarioModel, UsuarioReadDTO>();
             CreateMap<UsuarioCreateDTO, UsuarioModel>()
                         .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.Email.ToLower()));
-            
+
             CreateMap<UsuarioUpdateDTO, UsuarioModel>();
+            CreateMap<UsuarioUpdateStatusDTO, UsuarioModel>();
         }
 
         private void ColecaoMapping()

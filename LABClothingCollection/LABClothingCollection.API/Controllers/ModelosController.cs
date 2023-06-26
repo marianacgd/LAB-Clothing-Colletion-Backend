@@ -23,8 +23,86 @@ namespace LABClothingCollection.API.Controllers
             this.mapper = mapper;
         }
 
+        /// <summary>
+        /// Exibe lista de todos modelos cadastrados no sistema.
+        /// </summary>
+        /// <returns>Exibe lista de todos os modelos.</returns>
+        /// <response code="200">Sucesso no retorno da lista de modelos!</response>
+        /// <response code="500">Erro de comunicação com o servidor !</response>
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<IEnumerable<ModeloReadDTO>> Get([FromQuery] LayoutEnum? layout)
+        {
+            try
+            {
+                var modeloModels = lABClothingCollectionDbContext.Modelos
+                                       .Include(c => c.Colecao)
+                                       .ToList();
 
+                if (layout.HasValue)
+                {
+                    modeloModels = modeloModels.Where(w => w.Layout == layout!).ToList();
+                }
+
+                var modeloReadDTOs = mapper.Map<List<ModeloReadDTO>>(modeloModels);
+                return Ok(modeloReadDTOs);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
+        /// <summary>
+        /// Busca o cadastro de um determinado modelo, a partir do identificador informado.
+        /// </summary>
+        /// <param name="identificador">Id do Modelo</param>
+        /// <returns>Retorno do objeto Modelo</returns>
+        /// <response code="200">Sucesso no retorno do objeto modelo!</response>
+        /// <response code="404">Id inválido !</response>
+        /// <response code="500">Erro de comunicação com o servidor !</response>
+        [HttpGet("{identificador}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<ColecaoReadDTO> Get(int identificador)
+        {
+            try
+            {
+                var modeloModel = lABClothingCollectionDbContext.Modelos
+                                       .Include(c => c.Colecao)
+                                       .Where(w => w.Id == identificador)
+                                       .FirstOrDefault();
+
+                if (modeloModel == null)
+                {
+                    return NotFound(new { erro = "Registro não encontrado" });
+                }
+
+                var modeloReadDTO = RetornarModeloResponse(modeloModel);
+                return Ok(modeloReadDTO);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex);
+            }
+        }
+
+        /// <summary>
+        /// Inclui um novo modelo no sistema.
+        /// </summary>
+        /// <param name="modeloCreateDTO">Objeto Modelo</param>
+        /// <returns>Criação do Modelo</returns>
+        /// <response code="201">Objeto Modelo postado na lista !</response>
+        /// <response code="400">Dados Inválidos !</response>
+        /// <response code="409">Já existe um registro com esse dado !</response>
+        /// <response code="500">Erro de comunicação com o servidor !</response>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<ModeloReadDTO> Post([FromBody] ModeloDTO modeloCreateDTO)
         {
 
@@ -57,41 +135,21 @@ namespace LABClothingCollection.API.Controllers
             }
         }
 
-        [HttpGet]
-        public ActionResult<IEnumerable<ModeloReadDTO>> Get([FromQuery] LayoutEnum? layout)
-        {
-            var modeloModels = lABClothingCollectionDbContext.Modelos
-                                   .Include(c => c.Colecao)
-                                   .ToList();
-
-            if (layout.HasValue)
-            {
-                modeloModels = modeloModels.Where(w => w.Layout == layout!).ToList();
-            }
-
-            var modeloReadDTOs = mapper.Map<List<ModeloReadDTO>>(modeloModels);
-            return Ok(modeloReadDTOs);
-        }
-
-        [HttpGet("{identificador}")]
-        public ActionResult<ColecaoReadDTO> Get(int identificador)
-        {
-            var modeloModel = lABClothingCollectionDbContext.Modelos
-                                   .Include(c => c.Colecao)
-                                   .Where(w => w.Id == identificador)
-                                   .FirstOrDefault();
-
-            if (modeloModel == null)
-            {
-                return NotFound(new { erro = "Registro não encontrado" });
-            }
-
-            var modeloReadDTO = RetornarModeloResponse(modeloModel);
-            return Ok(modeloReadDTO);
-        }
-
-
+        /// <summary>
+        /// Altera o cadastro de um modelo, a partir do identificador fornecido.
+        /// </summary>
+        /// <param name="identificador">Id do Modelo</param>
+        /// <param name="modeloUpdateDTO">Objeto com as novas caracteristicas do Modelo</param>
+        /// <returns>Atualização do Modelo</returns>
+        /// <response code="200">Atualização do modelo realizada com sucesso !</response>
+        /// <response code="400">Dados inválidos !</response>
+        /// <response code="404">Id não encontrado !</response>
+        /// <response code="500">Erro de comunicação com o servidor !</response>
         [HttpPut("{identificador}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<ModeloReadDTO> Put(int identificador, [FromBody] ModeloDTO modeloUpdateDTO)
         {
             try
@@ -138,7 +196,18 @@ namespace LABClothingCollection.API.Controllers
             }
         }
 
+        /// <summary>
+        /// Remove do cadastro o modelo informado no identificador da requisição.
+        /// </summary>
+        /// <param name="identificador">Id do Modelo</param>
+        /// <returns>Remoção do modelo da lista !</returns>
+        /// <response code="204">Modelo removido com sucesso !</reponse>
+        /// <response code="404">Modelo não encontrado !</reponse>
+        /// <response code="500">Erro de comunicação com o servidor !</response>
         [HttpDelete("{identificador}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult Delete(int identificador)
         {
             try
