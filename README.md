@@ -6,7 +6,9 @@ LAB-Clothing-Collection-Backend  é uma aplicação Back-End audaciosa para gere
 
 # 🗂️**Acesso ao projeto**
 
-Você pode acessar ou baixar o código fonte do projeto no GitHub. [https://github.com/marianacgd/LAB-Clothing-Colletion-Backend](https://github.com/marianacgd/LAB-Clothing-Colletion-Backend)
+Você pode acessar ou baixar o código fonte do projeto no GitHub em: [https://github.com/marianacgd/LAB-Clothing-Colletion-Backend](https://github.com/marianacgd/LAB-Clothing-Colletion-Backend)
+
+Você pode acessar o Trello do projeto em: [https://trello.com/invite/b/I5W0lfR0/ATTIfbab67dc14828a250164d3eb7de5c912732D4FE1/api-lab-clothing-collection](https://trello.com/invite/b/I5W0lfR0/ATTIfbab67dc14828a250164d3eb7de5c912732D4FE1/api-lab-clothing-collection)
 
 
 ## Abrir e rodar o projeto
