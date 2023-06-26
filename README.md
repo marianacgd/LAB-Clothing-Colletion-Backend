@@ -10,6 +10,9 @@ Você pode acessar ou baixar o código fonte do projeto no GitHub em: [https://g
 
 Você pode acessar o Trello do projeto em: [https://trello.com/invite/b/I5W0lfR0/ATTIfbab67dc14828a250164d3eb7de5c912732D4FE1/api-lab-clothing-collection](https://trello.com/invite/b/I5W0lfR0/ATTIfbab67dc14828a250164d3eb7de5c912732D4FE1/api-lab-clothing-collection)
 
+Você pode acessar o Vídeo de apresentação do projeto em: [https://drive.google.com/file/d/1g-JgtS2VesnrpmPfBd-pR5Ui0S6AsPKm/view?usp=sharing](https://drive.google.com/file/d/1g-JgtS2VesnrpmPfBd-pR5Ui0S6AsPKm/view?usp=sharing)
+
+
 
 ## Abrir e rodar o projeto
 
