@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
+//controllers são responsáveis por receber as requisições dos clientes,
+//processar a lógica de negócio e retornar as respostas adequadas.
 namespace LABClothingCollection.API.Controllers
 {
     [Route("api/[controller]")]

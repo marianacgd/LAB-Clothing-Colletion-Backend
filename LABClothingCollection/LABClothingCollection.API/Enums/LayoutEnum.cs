@@ -7,3 +7,5 @@
         Liso = 3
     }
 }
+
+//enum para representar valores predefinidos de layout que podem ser usados.

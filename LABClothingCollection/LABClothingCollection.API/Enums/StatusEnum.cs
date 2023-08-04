@@ -6,3 +6,5 @@
         Ativo = 1
     }
 }
+
+//enum para representar valores predefinidos de status que podem ser usados.

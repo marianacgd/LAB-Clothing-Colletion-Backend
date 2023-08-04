@@ -1,6 +1,9 @@
 ﻿using LABClothingCollection.API.Enums;
 using System.ComponentModel.DataAnnotations;
 
+//DTO utilizado para transferir dados entre camadas da aplicação ou sistemas.
+//DTOs são objetos simples que carregam apenas os dados necessários para uma operação específica,
+//evitando transferir informações desnecessárias e melhorando o desempenho da aplicação.
 namespace LABClothingCollection.API.DTO.Usuarios
 {
     public class UsuarioUpdateDTO : IValidatableObject
