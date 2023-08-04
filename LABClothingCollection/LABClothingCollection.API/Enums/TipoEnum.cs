@@ -13,3 +13,5 @@
         Saia = 9
     }
 }
+
+//enum para representar valores predefinidos de tipo de pecas que podem ser usados.

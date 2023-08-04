@@ -7,34 +7,38 @@ namespace LABClothingCollection.API.Models
     /// <summary>
     /// Iteração com o banco de dados, nas tabelas utilizando o DBSet
     /// </summary>
-    public class LABClothingCollectionDbContext : DbContext
+    public class LABClothingCollectionDbContext : DbContext //Herança - LABClothingCollectionDbContext é uma subclasse de DbContext
     {
+        //construtor da classe, Recibe parametro options do tipo DbContextOptions.
+        //chama o construtor base da classe DbContext, que recebe as opções de configuração necessárias para estabelecer a conexão com a base de dados.
         public LABClothingCollectionDbContext(DbContextOptions options) : base(options)
         {
         }
 
+        //configura a estrutura da base de dados e suas relações.
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<ColecaoModel>().HasOne(e => e.Responsavel)
+            modelBuilder.Entity<ColecaoModel>().HasOne(e => e.Responsavel)  //relação entre as entidades ColecaoModel e UsuarioModel. HasOne= um-pra-muitos
                         .WithMany(x => x.Colecao)
                         .Metadata
-                        .DeleteBehavior = DeleteBehavior.Restrict;
+                        .DeleteBehavior = DeleteBehavior.Restrict; //restringe a eliminação de Usuario para evitar conflitos de integridade referencial.
 
             modelBuilder.Entity<ModeloModel>().HasOne(e => e.Colecao)
                         .WithMany(x => x.Modelos)
                         .Metadata
                         .DeleteBehavior = DeleteBehavior.Restrict;
 
-
+            //métodos privados chamados para dar carga de dados iniciais às tabelas da base de dados. 
             SeedDataUsuariosModel(modelBuilder);
             SeedDataColecoesModel(modelBuilder);
             SeedDataModelosModel(modelBuilder);
         }
 
-        public virtual DbSet<UsuarioModel> Usuarios { get; set; }
-        public virtual DbSet<ColecaoModel> Colecoes { get; set; }
-        public virtual DbSet<ModeloModel> Modelos { get; set; }
+        public virtual DbSet<UsuarioModel> Usuarios { get; set; } //propriedade q representa uma coleção de entidades UsuarioModel. Cada entidade UsuarioModel corresponderá a um registro na tabela "Usuário" da base de dados.
+        public virtual DbSet<ColecaoModel> Colecoes { get; set; } //propriedade q representa uma coleção de entidades ColecaoModel. Cada entidade ColecaoModel corresponderá a um registro na tabela "Colecao" da base de dados.
+        public virtual DbSet<ModeloModel> Modelos { get; set; } //propriedade q representa uma coleção de entidades ModeloModel. Cada entidade ModeloModel corresponderá a um registro na tabela "Modelo" da base de dados.
 
+        //Cargas de dados iniciais nas respectivas tabelas.
 
         private static void SeedDataUsuariosModel(ModelBuilder modelBuilder)
         {
@@ -176,3 +180,7 @@ namespace LABClothingCollection.API.Models
         }
     }
 }
+//DbContext representa o contexto da base de dados do aplicativo
+//é utilizada para configurar as entidades e suas relações na base de dados.
+//Além disso, contém propriedades para acessar as coleções de entidades UsuarioModel, ColecaoModely ModeloModel,
+//que se mapearão para as tabelas "Usuário", "Coleção" e "Modelo" na base de dados, respectivamente.

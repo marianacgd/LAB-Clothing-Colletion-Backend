@@ -8,3 +8,5 @@
         Verao = 3
     }
 }
+
+//enum para representar valores predefinidos de estacao do ano que podem ser usados.

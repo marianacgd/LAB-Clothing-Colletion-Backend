@@ -8,3 +8,5 @@
         Outro = 3
     }
 }
+
+//enum para representar valores predefinidos de tipo de usuario que podem ser usados.

@@ -4,6 +4,8 @@ using LABClothingCollection.API.DTO.Modelos;
 using LABClothingCollection.API.DTO.Usuarios;
 using LABClothingCollection.API.Models;
 
+//AutoMapper= mapea automaticamente os dados de uma classe para outra
+//simplificando a transferência de informações entre diferentes objetos.
 namespace LABClothingCollection.API.AutoMapper
 {
     public class MapperConfiguration : Profile
